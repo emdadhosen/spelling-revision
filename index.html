@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spelling Test App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f4f8;
+      text-align: center;
+      padding: 2rem;
+    }
+    .word-box {
+      font-size: 2rem;
+      margin: 1rem 0;
+    }
+    input[type="text"] {
+      font-size: 1.2rem;
+      padding: 0.5rem;
+      width: 200px;
+    }
+    button {
+      margin: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
+    .score {
+      margin-top: 1.5rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Spelling Test</h1>
+  <div class="word-box" id="currentWord">Press "Start" to begin</div>
+  <input type="text" id="inputBox" placeholder="Type here" disabled />
+  <br />
+  <button onclick="startTest()">Start</button>
+  <button onclick="checkSpelling()" id="checkBtn" disabled>Check</button>
+  <div class="score" id="scoreBoard"></div>
+
+  <script>
+    const words = ["elephant", "giraffe", "kangaroo", "rhinoceros", "hippopotamus"];
+    let currentIndex = 0;
+    let score = 0;
+    let total = 0;
+
+    function startTest() {
+      currentIndex = 0;
+      score = 0;
+      total = 0;
+      document.getElementById("inputBox").disabled = false;
+      document.getElementById("checkBtn").disabled = false;
+      showWord();
+      document.getElementById("scoreBoard").textContent = "";
+    }
+
+    function showWord() {
+      document.getElementById("currentWord").textContent = words[currentIndex];
+      document.getElementById("inputBox").value = "";
+      document.getElementById("inputBox").focus();
+    }
+
+    function checkSpelling() {
+      const input = document.getElementById("inputBox").value.trim();
+      total++;
+      if (input.toLowerCase() === words[currentIndex].toLowerCase()) {
+        score++;
+      }
+      currentIndex++;
+      if (currentIndex < words.length) {
+        showWord();
+      } else {
+        endTest();
+      }
+    }
+
+    function endTest() {
+      document.getElementById("inputBox").disabled = true;
+      document.getElementById("checkBtn").disabled = true;
+      document.getElementById("currentWord").textContent = "Test Finished!";
+      const percentage = ((score / total) * 100).toFixed(2);
+      document.getElementById("scoreBoard").textContent =
+        `Your score: ${score}/${total} (${percentage}%)`;
+    }
+  </script>
+</body>
+</html>
